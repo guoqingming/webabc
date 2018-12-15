@@ -27,7 +27,7 @@ public class HistoryController {
 
     @ApiOperation(value = "分页查询历史")
     @GetMapping("/historyList")
-    public PageInfo<History> queryHistoryList(@ApiParam(value = "页码") @RequestParam(required = false)Integer pageNum, @ApiParam(value = "每页多少条") @RequestParam(required = false)Integer pageSize) {
-        return historiesService.queryHistory(pageNum, pageSize);
+    public PageInfo<History> queryHistoryList(@ApiParam(value = "页码") @RequestParam(required = false)Integer pageNum, @ApiParam(value = "每页多少条") @RequestParam(required = false)Integer pageSize,@ApiParam(value = "关键字") @RequestParam(required = false)String keyWord) {
+        return historiesService.queryHistory(pageNum, pageSize,keyWord);
     }
 }

@@ -35,14 +35,14 @@ public class ConfigItemController {
 
     @PostMapping("/add")
     @ApiOperation(value = "添加配置项")
-    public void addItem(ConfigItem configItem) {
+    public void addItem(ConfigItem configItem) throws Exception {
         configItemService.addConfigItem(configItem);
     }
 
     @PostMapping("/delete")
     @ApiOperation(value = "删除配置项")
-    public void deleteItem(@ApiParam(value = "配置项ID") @RequestParam(required = false)Integer id) {
-        configItemService.deleteItem(id);
+    public void deleteItem(@ApiParam(value = "应用名") @RequestParam(required = false)String appName, @ApiParam(value = "环境标识") @RequestParam(required = false)String profile,@ApiParam(value = "key") @RequestParam(required = false)String key) throws Exception {
+        configItemService.deleteItem(appName,profile,key);
     }
 
     @PostMapping("/encript")
