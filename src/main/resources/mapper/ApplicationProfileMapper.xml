@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qm.mapper.ApplicationProfileMapper">
+  <resultMap id="BaseResultMap" type="com.qm.domain.ApplicationProfile">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="app_name" jdbcType="VARCHAR" property="appName" />
+    <result column="app_desc" jdbcType="VARCHAR" property="appDesc" />
+    <result column="profile" jdbcType="VARCHAR" property="profile" />
+    <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    id, app_name, app_desc, profile, delete_flag, create_at, create_by, update_at, update_by
+  </sql>
+  <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    select 
+    <include refid="Base_Column_List" />
+    from application_profile
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="listByAppName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from application_profile where app_name = #{appName}
+  </select>
+  <select id="countByAppName" resultType="java.lang.Integer">
+    select count(1) from application_profile where app_name = #{appName}
+  </select>
+  <select id="queryByAppNameProfile" resultType="com.qm.domain.ApplicationProfile">
+    select <include refid="Base_Column_List"/> from application_profile where app_name =#{appName} and profile = #{profile}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    delete from application_profile
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qm.domain.ApplicationProfile">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    insert into application_profile (id, app_name, app_desc, 
+      profile, delete_flag, create_at, 
+      create_by, update_at, update_by
+      )
+    values (#{id,jdbcType=INTEGER}, #{appName,jdbcType=VARCHAR}, #{appDesc,jdbcType=VARCHAR}, 
+      #{profile,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=TINYINT}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qm.domain.ApplicationProfile">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    insert into application_profile
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="appName != null">
+        app_name,
+      </if>
+      <if test="appDesc != null">
+        app_desc,
+      </if>
+      <if test="profile != null">
+        profile,
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateAt != null">
+        update_at,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="appName != null">
+        #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="appDesc != null">
+        #{appDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null">
+        #{profile,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null">
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByIdSelective" parameterType="com.qm.domain.ApplicationProfile">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    update application_profile
+    <set>
+      <if test="appName != null">
+        app_name = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="appDesc != null">
+        app_desc = #{appDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null">
+        profile = #{profile,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag = #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateById" parameterType="com.qm.domain.ApplicationProfile">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    update application_profile
+    set app_name = #{appName,jdbcType=VARCHAR},
+      app_desc = #{appDesc,jdbcType=VARCHAR},
+      profile = #{profile,jdbcType=VARCHAR},
+      delete_flag = #{deleteFlag,jdbcType=TINYINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="logicDelete">
+      update application_profile set delete_flag = 1 where app_name=#{appName}
+    </update>
+</mapper>

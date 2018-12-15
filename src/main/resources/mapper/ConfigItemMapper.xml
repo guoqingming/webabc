@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qm.mapper.ConfigItemMapper">
+  <resultMap id="BaseResultMap" type="com.qm.domain.ConfigItem">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="app_id" jdbcType="INTEGER" property="appId" />
+    <result column="key" jdbcType="VARCHAR" property="key" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="cipher" jdbcType="TINYINT" property="cipher" />
+    <result column="sensitive" jdbcType="TINYINT" property="sensitive" />
+    <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    id, app_id, `key`, `value`, cipher, `sensitive`, delete_flag, create_at, create_by, 
+    update_at, update_by
+  </sql>
+  <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    select 
+    <include refid="Base_Column_List" />
+    from config_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    delete from config_item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qm.domain.ConfigItem">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    insert into config_item (id, app_id, `key`, 
+      `value`, cipher, `sensitive`, 
+      delete_flag, create_at, create_by, 
+      update_at, update_by)
+    values (#{id,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{key,jdbcType=VARCHAR}, 
+      #{value,jdbcType=VARCHAR}, #{cipher,jdbcType=TINYINT}, #{sensitive,jdbcType=TINYINT}, 
+      #{deleteFlag,jdbcType=TINYINT}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qm.domain.ConfigItem">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    insert into config_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="appId != null">
+        app_id,
+      </if>
+      <if test="key != null">
+        `key`,
+      </if>
+      <if test="value != null">
+        `value`,
+      </if>
+      <if test="cipher != null">
+        cipher,
+      </if>
+      <if test="sensitive != null">
+        `sensitive`,
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateAt != null">
+        update_at,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="key != null">
+        #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="cipher != null">
+        #{cipher,jdbcType=TINYINT},
+      </if>
+      <if test="sensitive != null">
+        #{sensitive,jdbcType=TINYINT},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null">
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByIdSelective" parameterType="com.qm.domain.ConfigItem">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    update config_item
+    <set>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="key != null">
+        `key` = #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        `value` = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="cipher != null">
+        cipher = #{cipher,jdbcType=TINYINT},
+      </if>
+      <if test="sensitive != null">
+        `sensitive` = #{sensitive,jdbcType=TINYINT},
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag = #{deleteFlag,jdbcType=TINYINT},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateById" parameterType="com.qm.domain.ConfigItem">
+    <!-- generated @mbg.generated date: 2018-12-15 -->
+    update config_item
+    set app_id = #{appId,jdbcType=INTEGER},
+      `key` = #{key,jdbcType=VARCHAR},
+      `value` = #{value,jdbcType=VARCHAR},
+      cipher = #{cipher,jdbcType=TINYINT},
+      `sensitive` = #{sensitive,jdbcType=TINYINT},
+      delete_flag = #{deleteFlag,jdbcType=TINYINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="logicDelete">
+      update config_item set delete_flag = 1 where id = #{id}
+    </update>
+
+  <update id="logicDeleteByAppName">
+    update config_item set delete_flag = 1 where app_id in (select id from application_profile where app_name = #{appName})
+  </update>
+  <update id="encriptValue">
+    update config_item set value = #{encriptValue},cipher = 1 where id = #{id}
+  </update>
+
+  <update id="decriptValue">
+    update config_item set value = #{decriptValue},cipher = 0 where id = #{id}
+  </update>
+
+</mapper>
