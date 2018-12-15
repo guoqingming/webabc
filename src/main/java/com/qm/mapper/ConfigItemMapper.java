@@ -46,6 +46,24 @@ public interface ConfigItemMapper {
      */
     int decriptValue(@Param("id") Integer id, @Param("decriptValue") String decriptValue);
 
+    /**
+     *
+     * @param appId
+     * @param key
+     * @return
+     */
+    int countByAppIdKey(@Param("appId") Integer appId, @Param("key") String key);
+
+    Integer queryItemIdByAppIdKey(@Param("appId") Integer appId, @Param("key") String key);
+
+    ConfigItem queryItemByAppIdKey(@Param("appId") Integer appId, @Param("key") String key);
+    /**
+     * 更新配置项的值
+     * @param configItem
+     * @return
+     */
+    int updateItemValue(ConfigItem configItem);
+
 
 
 }

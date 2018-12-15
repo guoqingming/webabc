@@ -55,9 +55,9 @@ public class HistoriesService {
      * @param pageSize
      * @return
      */
-    public PageInfo<History> queryHistory(Integer pageNum, Integer pageSize) {
+    public PageInfo<History> queryHistory(Integer pageNum, Integer pageSize,String keyWord) {
         PageHelper.startPage(pageNum, pageSize);
-        List<History> list = historyMapper.queryHistories();
+        List<History> list = historyMapper.findAll(keyWord);
         return new PageInfo<>(list);
     }
 }

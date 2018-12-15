@@ -1,8 +1,8 @@
 package com.qm.service;
 
+import com.qm.domain.ConfigItem;
 import com.qm.enums.Profile;
 import com.qm.utils.CheckUtil;
-import com.qm.vo.ConfigItem;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 @Slf4j
-public class ConfigService {
+public class ZkConfigService {
 
     public static final String PATH_PREFIX = "/config/";
     @Autowired
@@ -48,17 +48,19 @@ public class ConfigService {
     }
 
     public void addConfigItem(ConfigItem item) throws Exception {
-        CheckUtil.isNull(item,"添加配置项传入参数为空");
-        CheckUtil.isBlank(item.getAppName(),"项目英文名为空");
-        CheckUtil.isBlank(item.getProfile(),"环境标识为空");
-        CheckUtil.isBlank(item.getKey(),"key为空");
-        CheckUtil.isBlank(item.getValue(),"value为空");
-        CheckUtil.isNull(item.getCipher(),"是否加密为空");
-        CheckUtil.isNull(item.getSensitive(),"是否敏感为空");
         String path = PATH_PREFIX + item.getAppName() +"/"+ item.getProfile() + "/" +item.getKey();
+        client.create().forPath(path);
         client.setData().forPath(path,item.getValue().getBytes());
-
     }
 
+    public void deleteConfigItem(String appName,String profile,String key) throws Exception {
+        String path = PATH_PREFIX + appName +"/"+ profile + "/" +key;
+        client.delete().forPath(path);
+    }
+
+    public void updateItemValue(ConfigItem item) throws Exception {
+        String path = PATH_PREFIX + item.getAppName() +"/"+ item.getProfile() + "/" +item.getKey();
+        client.setData().forPath(path,item.getValue().getBytes());
+    }
 
 }

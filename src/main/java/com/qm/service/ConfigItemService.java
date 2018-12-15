@@ -12,7 +12,10 @@ import com.qm.utils.CheckUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -37,7 +40,16 @@ public class ConfigItemService {
     @Resource
     private ApplicationProfileMapper applicationProfileMapper;
 
-    public void addConfigItem(ConfigItem configItem) {
+    @Autowired
+    private ZkConfigService zkConfigService;
+
+    /**
+     * 添加配置项
+     * @param configItem
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+    public void addConfigItem(ConfigItem configItem) throws Exception {
         CheckUtil.isNull(configItem,"传入参数为空");
         CheckUtil.isBlank(configItem.getAppName(),"应用名为空");
         CheckUtil.isBlank(configItem.getProfile(),"环境参数为空");
@@ -45,6 +57,7 @@ public class ConfigItemService {
         CheckUtil.isNull(applicationProfile,"未找到相应的应用");
         configItem.setAppId(applicationProfile.getId());
         configItemMapper.insertSelective(configItem);
+        zkConfigService.addConfigItem(configItem);
     }
 
     /**
@@ -54,7 +67,6 @@ public class ConfigItemService {
      * @param file 文件流
      */
     public void importConfigItems(MultipartFile file,String appName, String profile) throws Exception {
-
         CheckUtil.isNull(file,"文件为空");
         String fileName = file.getOriginalFilename();
         CheckUtil.isTrue(!fileName.endsWith(".properties"),"文件格式不正确");
@@ -73,7 +85,12 @@ public class ConfigItemService {
                 ci.setAppId(applicationProfile.getId());
                 ci.setKey(key);
                 ci.setValue(value);
-                configItemMapper.insertSelective(ci);
+                int count = configItemMapper.countByAppIdKey(applicationProfile.getId(), key);
+                if(count == 1){
+                    configItemMapper.updateItemValue(ci);
+                }else {
+                    configItemMapper.insertSelective(ci);
+                }
 
             }
         }
@@ -81,11 +98,21 @@ public class ConfigItemService {
 
     /**
      * 删除配置项
-     * @param id
+     * @param appName
+     * @param profile
+     * @param key
      */
-    public void deleteItem(Integer id) {
-        CheckUtil.isNull(id,"传入ID为空");
-        configItemMapper.logicDelete(id);
+    public void deleteItem(String appName,String profile,String key) throws Exception {
+        CheckUtil.isBlank(appName,"传入应用名为空");
+        CheckUtil.isBlank(profile,"传入环境标识为空");
+        CheckUtil.isBlank(key,"传入key为空");
+        ApplicationProfile applicationProfile = applicationProfileMapper.queryByAppNameProfile(appName, profile);
+        CheckUtil.isNull(applicationProfile,"未找到对应的应用");
+        Integer itemId = configItemMapper.queryItemIdByAppIdKey(applicationProfile.getId(), key);
+        CheckUtil.isNull(itemId,"未找到对应的配置项");
+        configItemMapper.logicDelete(itemId);
+        zkConfigService.deleteConfigItem(appName,profile,key);
+
     }
 
     /**
@@ -113,6 +140,26 @@ public class ConfigItemService {
         CheckUtil.isBlank(value,"传入的value为空");
         String encriptValue = AesUtils.decript(value);
         configItemMapper.decriptValue(id, encriptValue);
+
+    }
+
+    /**
+     * 修改配置value
+     * @param item
+     * @throws Exception
+     */
+    public void updateValue(ConfigItem item) throws Exception {
+        CheckUtil.isBlank(item.getAppName(),"传入应用名为空");
+        CheckUtil.isBlank(item.getProfile(),"传入环境标识为空");
+        CheckUtil.isBlank(item.getKey(),"传入key为空");
+        CheckUtil.isBlank(item.getValue(),"传入value为空");
+        ApplicationProfile applicationProfile = applicationProfileMapper.queryByAppNameProfile(item.getAppName(), item.getProfile());
+        CheckUtil.isNull(applicationProfile,"未找到对应的应用");
+        Integer itemId = configItemMapper.queryItemIdByAppIdKey(applicationProfile.getId(), item.getKey());
+        CheckUtil.isNull(itemId,"未找到对应的配置项");
+        item.setId(itemId);
+        configItemMapper.updateItemValue(item);
+        zkConfigService.updateItemValue(item);
 
     }
 }

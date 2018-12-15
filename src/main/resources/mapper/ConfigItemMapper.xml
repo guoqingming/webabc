@@ -27,6 +27,18 @@
     from config_item
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="countByAppIdKey" resultType="java.lang.Integer">
+      select count(1) from config_item where app_id = #{appId} and key =#{key}
+    </select>
+
+  <select id="queryItemIdByAppIdKey" resultType="java.lang.Integer">
+    select id from config_item where app_id = #{appId} and key = #{key}
+  </select>
+
+  <select id="queryItemByAppIdKey" resultMap="BaseResultMap">
+     select <include refid="Base_Column_List"/> from config_item where app_id = #{appId} and key = #{key}
+  </select>
+
   <delete id="deleteById" parameterType="java.lang.Integer">
     <!-- generated @mbg.generated date: 2018-12-15 -->
     delete from config_item
@@ -182,6 +194,22 @@
 
   <update id="decriptValue">
     update config_item set value = #{decriptValue},cipher = 0 where id = #{id}
+  </update>
+  <update id="updateItemValue" parameterType="com.qm.domain.ConfigItem">
+
+    update config_item
+    <set>
+      <if test="value != null">
+        `value` = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where app_id = #{appId,jdbcType=INTEGER} and key = #{key}
   </update>
 
 </mapper>
